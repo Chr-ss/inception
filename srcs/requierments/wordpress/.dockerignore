@@ -1,0 +1,43 @@
+# Node.js
+node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Git
+.git
+.gitignore
+
+# macOS system files
+.DS_Store
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Environment/config
+.env
+*.env
+*.local
+
+# OS or IDE/editor metadata
+*.swp
+*.swo
+*.bak
+.idea/
+.vscode/
+*.log
+
+# Test files or build artifacts
+coverage/
+dist/
+build/
+tmp/
+*.tgz
+*.zip
+*.tar

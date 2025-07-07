@@ -2,45 +2,47 @@ version: "3.8"
 
 services:
   mariadb:
-    build: ./requierments/mariadb/.
-    container_name: mariadb_container
+    build:
+      context: .
+      dockerfile: requirements/mariadb/Dockerfile
+    container_name: mariadb
     volumes:
-      - mdb:/var/lib/mysql
-    expose:
-        - "3306"
+      - db-volume:/var/lib/mysql
+    restart: always
     env_file:
       - ../.env
     networks:
       - docker-network
-    restart: on-failure
+    expose:
+      - "3306"
 
   wordpress:
-    build: ./requierments/wordpress/.
-    container_name: wordpress_container
-    # ports:
-    #   - "8080:80"
+    build:
+      context: ./requirements/wordpress
+    container_name: wordpress
     depends_on:
       - mariadb
     volumes:
-      - wp:/var/www/html
+      - wp-volume:/var/www/html
     networks:
       - docker-network
+    env_file:
+      - ../.env
     expose:
       - "9000"
     restart: on-failure
 
   nginx:
-    build: ./requierments/nginx/.
-      # context: ./requierments/nginx/.
-      # args:
-      #   DOMAIN_NAME: ${DOMAIN_NAME}
-    container_name: nginx_container
+    build:
+      context: ./requirements/nginx
+    container_name: nginx
     ports:
       - 443:443
     env_file:
       - ../.env
-    # volumes:
-    #   - ./nginx.conf:/etc/nginx/nginx.conf
+    volumes:
+      - wp-volume:/var/www/html:ro
+      - ./requirements/nginx/conf:/etc/nginx/conf.d/
     depends_on:
       - wordpress
     networks:
@@ -48,22 +50,25 @@ services:
     restart: on-failure
 
 volumes:
-  mdb:
-   driver_opts:
-      type: 'none'
+  db-volume:
+    driver: local
+    driver_opts:
+      type: none
       o: bind
       # MacOS: 
-      device: /Users/christian.rasche/crasche/data/mysql
+      device: /Users/christian.rasche/crasche/data/mariadb
       # Linux:
-      # device: /home/crasche/data/mysql
-  wp:
-   driver_opts:
-      type: 'none'
+      # device: /home/crasche/data/mariadb
+  wp-volume:
+    driver: local
+    driver_opts:
+      type: none
       o: bind
       # MacOS: 
       device: /Users/christian.rasche/crasche/data/wordpress
       # Linux:
       # device: /home/crasche/data/wordpress
+
 networks:
     docker-network:
         driver: bridge

@@ -55,19 +55,19 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      # MacOS: 
-      device: /Users/christian.rasche/crasche/data/mariadb
+      # MacOS:
+      # device: /Users/christian.rasche/crasche/data/mariadb
       # Linux:
-      # device: /home/crasche/data/mariadb
+      device: /home/crasche/data/mariadb
   wp-volume:
     driver: local
     driver_opts:
       type: none
       o: bind
-      # MacOS: 
-      device: /Users/christian.rasche/crasche/data/wordpress
+      # MacOS:
+      # device: /Users/christian.rasche/crasche/data/wordpress
       # Linux:
-      # device: /home/crasche/data/wordpress
+      device: /home/crasche/data/wordpress
 
 networks:
     docker-network:
